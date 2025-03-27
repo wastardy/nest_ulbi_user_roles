@@ -8,6 +8,7 @@ interface UserCreationAttrs {
 
 @Table({ tableName: 'users' })
 export class User extends Model<User, UserCreationAttrs> {
+  @ApiProperty({ example: 1, description: 'Unique identifier' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -16,6 +17,7 @@ export class User extends Model<User, UserCreationAttrs> {
   })
   declare id: number;
 
+  @ApiProperty({ example: 'user@gmail.com', description: 'Email' })
   @Column({
     type: DataType.STRING,
     unique: true,
@@ -23,18 +25,27 @@ export class User extends Model<User, UserCreationAttrs> {
   })
   email: string;
 
+  @ApiProperty({ example: '12345', description: 'Password' })
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
   password: string;
 
+  @ApiProperty({
+    example: true,
+    description: 'Indicates whether the user is banned or not',
+  })
   @Column({
     type: DataType.BOOLEAN,
     defaultValue: false,
   })
   banned: boolean;
 
+  @ApiProperty({
+    example: 'Spreading sensitive content',
+    description: 'Reason for banning',
+  })
   @Column({
     type: DataType.STRING,
     allowNull: true,
