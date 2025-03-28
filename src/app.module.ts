@@ -15,8 +15,8 @@ import { UserRoles } from './roles/user-roles.model';
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSGRES_PORT),
-      username: process.env.POSTGRES_USER,
+      port: Number(process.env.POSTGRES_PORT),
+      username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_NAME,
       models: [User, Role, UserRoles],
