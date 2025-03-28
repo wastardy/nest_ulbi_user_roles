@@ -27,7 +27,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/sequelize": "^11.0.0",
     "@nestjs/swagger": "^11.1.0",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "cross-env": "^7.0.3",
     "mysql2": "^3.14.0",
     "pg": "^8.14.1",
