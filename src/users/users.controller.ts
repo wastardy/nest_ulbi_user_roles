@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './users.model';
+import { UserRole } from 'src/enums/user-role.enum';
 
 @ApiTags('Users')
 @Controller('users')
@@ -26,7 +27,10 @@ export class UsersController {
   @ApiOperation({ summary: 'Create user' })
   @ApiResponse({ status: 201, type: User })
   @Post()
-  createUser(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+  createUser(
+    @Body() createUserDto: CreateUserDto,
+    @Body('role') role: UserRole,
+  ) {
+    return this.userService.createUser(createUserDto, role);
   }
 }
