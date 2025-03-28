@@ -24,10 +24,27 @@ export class UsersService {
   }
 
   async getUserById(id: number): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({
+      where: { id },
+      include: { all: true },
+    });
 
     if (!user) {
       throw new NotFoundException(errorConstants.USER_NOT_FOUND);
+    }
+
+    return user;
+  }
+
+  async getUserByEmail(email: string): Promise<User | null> {
+    const user = await this.userRepository.findOne({
+      where: { email },
+      include: { all: true },
+    });
+
+    if (!user) {
+      // throw new NotFoundException(errorConstants.USER_NOT_FOUND);
+      return null;
     }
 
     return user;
@@ -41,6 +58,9 @@ export class UsersService {
     const userRole = await this.roleService.getRoleByValue(role);
 
     await user.$set('roles', [userRole.id]);
+
+    user.email = createUserDto.email;
+    user.roles = [userRole];
 
     return user;
   }
