@@ -1,0 +1,6 @@
+export default {
+  ROLE_VALUE_NOT_FOUND: 'ROLE_VALUE_NOT_FOUND',
+  ROLE_NOT_FOUND: 'ROLE_NOT_FOUND',
+
+  USER_NOT_FOUND: 'USER_NOT_FOUND',
+} as const;
