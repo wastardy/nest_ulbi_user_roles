@@ -1,11 +1,16 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import errorConstants from 'src/constants/error.constants';
-import { UserDto } from 'src/users/dto/user.dto';
+import { UserDto } from 'src/dtos/user.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { UserRole } from 'src/enums/user-role.enum';
 import { User } from 'src/users/users.model';
+import { TokenResponse } from 'src/dtos/token-response.interface';
 
 @Injectable()
 export class AuthService {
@@ -14,9 +19,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(userDto: UserDto) {}
+  async login(userDto: UserDto): Promise<TokenResponse> {
+    const user = await this.validateUser(userDto);
 
-  async register(userDto: UserDto) {
+    return this.generateToken(user);
+  }
+
+  async register(userDto: UserDto): Promise<TokenResponse> {
     const { email, password } = userDto;
 
     const isUserExists = await this.userService.getUserByEmail(email);
@@ -38,11 +47,33 @@ export class AuthService {
     }
   }
 
-  generateToken(user: User) {
+  generateToken(user: User): TokenResponse {
     const payload = { email: user.email, id: user.id, roles: user.roles };
 
     return {
       token: this.jwtService.sign(payload),
     };
+  }
+
+  private async validateUser(userDto: UserDto): Promise<User> {
+    const { email, password } = userDto;
+
+    console.log('email', email);
+    console.log('password', password);
+
+    const user = await this.userService.getUserByEmail(email);
+
+    if (!user) throw new ConflictException(errorConstants.USERS_NOT_FOUND);
+
+    console.log('found user password:', user.password);
+
+    const passwordEquals = await bcrypt.compare(
+      password,
+      user.dataValues.password,
+    );
+
+    if (user && passwordEquals) return user;
+
+    throw new UnauthorizedException(errorConstants.INCORRECT_EMAIL_OR_PASSWORD);
   }
 }
