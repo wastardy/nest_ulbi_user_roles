@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Role } from './roles.model';
-import { CreateRoleDto } from './dto/create-role.dto';
+import { CreateRoleDto } from '../dtos/create-role.dto';
 import errorConstants from 'src/constants/error.constants';
 import { InjectModel } from '@nestjs/sequelize';
 import { UserRole } from 'src/enums/user-role.enum';

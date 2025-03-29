@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './users.model';
 import { InjectModel } from '@nestjs/sequelize';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from '../dtos/create-user.dto';
 import errorConstants from 'src/constants/error.constants';
 import { RolesService } from 'src/roles/roles.service';
 import { UserRole } from 'src/enums/user-role.enum';
@@ -39,14 +39,13 @@ export class UsersService {
   async getUserByEmail(email: string): Promise<User | null> {
     const user = await this.userRepository.findOne({
       where: { email },
+      attributes: ['id', 'email', 'password'],
       include: { all: true },
     });
 
-    if (!user) {
-      // throw new NotFoundException(errorConstants.USER_NOT_FOUND);
-      return null;
-    }
+    if (!user) return null;
 
+    console.log('Fetched user:', user);
     return user;
   }
 
