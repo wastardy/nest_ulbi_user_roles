@@ -31,14 +31,14 @@ export class User extends Model<User, UserCreationAttrs> {
     unique: true,
     allowNull: false,
   })
-  email: string;
+  declare email: string;
 
   @ApiProperty({ example: '12345', description: 'Password' })
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  password: string;
+  declare password: string;
 
   @ApiProperty({
     example: true,
@@ -48,7 +48,7 @@ export class User extends Model<User, UserCreationAttrs> {
     type: DataType.BOOLEAN,
     defaultValue: false,
   })
-  banned: boolean;
+  declare banned: boolean;
 
   @ApiProperty({
     example: 'Spreading sensitive content',
@@ -58,8 +58,8 @@ export class User extends Model<User, UserCreationAttrs> {
     type: DataType.STRING,
     allowNull: true,
   })
-  banReason: string;
+  declare banReason: string;
 
   @BelongsToMany(() => Role, () => UserRoles)
-  roles: Role[];
+  declare roles: Role[];
 }
