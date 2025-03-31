@@ -58,19 +58,11 @@ export class AuthService {
   private async validateUser(userDto: UserDto): Promise<User> {
     const { email, password } = userDto;
 
-    console.log('email', email);
-    console.log('password', password);
-
     const user = await this.userService.getUserByEmail(email);
 
     if (!user) throw new ConflictException(errorConstants.USERS_NOT_FOUND);
 
-    console.log('found user password:', user.password);
-
-    const passwordEquals = await bcrypt.compare(
-      password,
-      user.dataValues.password,
-    );
+    const passwordEquals = await bcrypt.compare(password, user.password);
 
     if (user && passwordEquals) return user;
 
